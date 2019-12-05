@@ -23,13 +23,14 @@ PACKETS_INFO  get_info_client(unsigned int size) {
 }
 
 
-void mirror_buffer(U_CHAR* buf, size_t len_buf) {
-	char tmp_buf[4];
+void mirror_buffer(U_CHAR* buf, unsigned int len_buf) {
+	U_CHAR *tmp_buf = calloc(len_buf, sizeof(U_CHAR));
 	memcpy(tmp_buf, buf, len_buf);
 
 	for (int i = 0; i < len_buf; ++i) {
 		buf[i] = tmp_buf[(len_buf-1) - i];
 	}
+	free(tmp_buf);
 }
 
 void get_dec_in_256base(unsigned int num, U_CHAR* buf, unsigned int len_buf){
@@ -55,7 +56,7 @@ void get_CRC(U_CHAR* buf, size_t len_buf, U_CHAR* ret_buf) {
 // len_buf is here the whole length of the UDP data packet, so even ID and CRC
 bool check_CRC(U_CHAR* buf, size_t len_buf) {
 	bool ret = false;
-	uint64_t crc_val = crc_64_ecma(buf, len_buf - CRC_LEN);
+	uint64_t crc_val = crc_64_ecma(buf, len_buf);
 	if (!crc_val) {
 		ret = true;
 	}
@@ -65,7 +66,7 @@ bool check_CRC(U_CHAR* buf, size_t len_buf) {
 void append_comps(U_CHAR* buf, size_t len_buf){
 	// append ID of the current packet sent
 	U_CHAR ID_buf[ID_LEN];
-	get_dec_in_256base(curr_seq_ID++, ID_buf, ID_LEN);
+	get_dec_in_256base(curr_seq_ID, ID_buf, ID_LEN);
 	memcpy(&buf[len_buf], ID_buf, ID_LEN);
 
 	// append ID of the client
@@ -92,7 +93,7 @@ void send_packet(sockets_t client_sock, U_CHAR* buf, int sizeof_buf, sockets_inf
 	bool CRC_check = false;
 	bool ID_check = false;
 	struct timeval timeout;
-	timeout.tv_sec = 5;
+	timeout.tv_sec = 2;
 	timeout.tv_usec = 0;
 	FD_ZERO(&rset);
 	FD_SET(client_sock.ack, &rset);
@@ -101,12 +102,13 @@ void send_packet(sockets_t client_sock, U_CHAR* buf, int sizeof_buf, sockets_inf
 		if(FD_ISSET(client_sock.ack, &rset)){	// if received
 			nBytesRecv = recvfrom(client_sock.ack, Buffer_Rec, sizeof(Buffer_Rec), 0, (SOCKADDR*)&(client_info->ack), &nClient_ack);
 			int iSocketError = WSAGetLastError();	
+			printf("iSocketError %d\n", iSocketError);
 			if(iSocketError == 10054){
 				printf("Port unreachable!\n");
 				exit(1);
 			}
 			CRC_check = check_CRC(Buffer_Rec, nBytesRecv);
-			if ((!CRC_check) && (!memcmp(Buffer_Rec, "Packet received!", PACK_REC_LEN))) {
+			if ( CRC_check && (!memcmp(Buffer_Rec, "Packet received!", PACK_REC_LEN))) {
 				curr_seq_ID++;
 				break;
 			}
@@ -156,23 +158,33 @@ int main() {
 
 	client_info.data.sin_family = AF_INET;
 	client_info.data.sin_port = htons(CLIENT_DATA_PORT);
-	inet_pton(AF_INET, "192.168.43.208", &client_info.data.sin_addr);
+	inet_pton(AF_INET, CLIENT_ADDRESS, &client_info.data.sin_addr);
 	printf("Address family: %d\nIP address of server: %d\nServer port number: %d\n", client_info.data.sin_family, htonl(client_info.data.sin_addr.s_addr), htons(client_info.data.sin_port));
 
 	client_info.ack.sin_family = AF_INET;
 	client_info.ack.sin_port = htons(CLIENT_ACK_PORT);
-	inet_pton(AF_INET, "127.0.0.1", &client_info.ack.sin_addr);
+	inet_pton(AF_INET, CLIENT_ADDRESS, &client_info.ack.sin_addr);
 	printf("Address family: %d\nIP address of server: %d\nServer port number: %d\n", client_info.ack.sin_family, htonl(client_info.ack.sin_addr.s_addr), htons(client_info.ack.sin_port));
 
 	server_info.data.sin_family = AF_INET;
 	server_info.data.sin_port = htons(SERVER_DATA_PORT);
-	inet_pton(AF_INET, "127.0.0.1", &server_info.data.sin_addr);
+	inet_pton(AF_INET, SERVER_ADDRESS, &server_info.data.sin_addr);
 	printf("Address family: %d\nIP address of server: %d\nServer port number: %d\n", server_info.data.sin_family, htonl(server_info.data.sin_addr.s_addr), htons(server_info.data.sin_port));
 
 	server_info.ack.sin_family = AF_INET;
 	server_info.ack.sin_port = htons(SERVER_ACK_PORT);
-	inet_pton(AF_INET, "127.0.0.1", &server_info.ack.sin_addr);
+	inet_pton(AF_INET, SERVER_ADDRESS, &server_info.ack.sin_addr);
 	printf("Address family: %d\nIP address of server: %d\nServer port number: %d\n", server_info.ack.sin_family, htonl(server_info.ack.sin_addr.s_addr), htons(server_info.ack.sin_port));
+
+	// Bind sockets
+	int err1 = bind(client_sock.data ,&client_info.data, sizeof(SOCKADDR_IN));
+	int err2 = bind(client_sock.ack, &client_info.ack, sizeof(SOCKADDR_IN));
+	if ((err1 == SOCKET_ERROR) || (err2 == SOCKET_ERROR)) {
+		int iSocketError = WSAGetLastError();
+		printf("WSALastError: %d\n", iSocketError);
+		WSACleanup();
+		return 100;
+	}
 
 
 	// Define buffers
@@ -198,9 +210,9 @@ int main() {
 		if (c == 's') {
 			printf("Write source file\n");
 			scanf("%s", Buffer_Name);
-			printf("%s\n", Buffer_Name);
+			//printf("%s\n", Buffer_Name);
 			memcpy(&Buffer_Path[PATH_SENT_LEN], Buffer_Name, strlen(Buffer_Name));
-			printf("%s\n", Buffer_Path);
+			//printf("%s\n", Buffer_Path);
 			fptr = fopen(Buffer_Path, "rb");
 			if (fptr == NULL) {
 				printf("Couldn't open the file, error is: %s\n", strerror(errno));
@@ -211,13 +223,17 @@ int main() {
 			rewind(fptr);
 			char* file_data = (char*)malloc((length) * sizeof(char));
 			length = fread(file_data, 1, length, fptr);
+			fclose(fptr);
 
 			// calc hash
 			SHA512_Update(&ctx, file_data, length);
 			SHA512_Final(digest, &ctx);
 			
 			// send packet with the name
+			sizeof_name = strlen(Buffer_Name);
 			Buffer_Send = calloc(sizeof_name + ID_LEN + IDS_LEN + CRC_LEN, sizeof(U_CHAR));
+			memcpy(Buffer_Send, Buffer_Name, sizeof_name);
+
 			append_comps(Buffer_Send, sizeof_name);
 			send_packet(client_sock, Buffer_Send, sizeof_name, &client_info, &server_info);
 			free(Buffer_Send);
@@ -254,10 +270,10 @@ int main() {
 			send_packet(client_sock, Buffer_Send, SHA512_DIGEST_LENGTH, &client_info, &server_info);
 			free(Buffer_Send);
 			curr_seq_ID = 0;
+			printf("File sent!\n");
 		}
 	}
 	
-	fclose(fptr);
 	// Close the socket
 	closesocket(client_sock.data);
 	closesocket(client_sock.ack);
