@@ -87,9 +87,9 @@
     <LibraryPath>C:\KDS\KDS\LIB_files;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\KDS\KDS\INC_files;$(IncludePath)</IncludePath>
-    <ReferencePath>C:\KDS\KDS\DLL_files;$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\KDS\KDS\LIB_files;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\UDP_Server\KDS\INC_files;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\UDP_Server\KDS\DLL_files;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\UDP_Server\KDS\LIB_files;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\KDS\KDS\INC_files;$(IncludePath)</IncludePath>
