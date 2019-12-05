@@ -6,6 +6,9 @@
 #define SERVER_DATA_PORT 55555
 #define SERVER_ACK_PORT 55556
 
+#define CLIENT_ADDRESS "192.168.0.101"
+#define SERVER_ADDRESS "192.168.0.103"
+
 #define STR(x)   #x
 #define SHOW_DEFINE(x) printf("%s=%s\n", #x, STR(x))
 #define MAX_LEN 1024
