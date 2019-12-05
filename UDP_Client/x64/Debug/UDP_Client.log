@@ -1,0 +1,10 @@
+﻿  client.c
+C:\UDP_Server\UDP_Client\client.c(50,1): warning C4133: 'initializing': incompatible types - from 'uint64_t *' to 'U_CHAR *'
+C:\UDP_Server\UDP_Client\client.c(86,15): warning C4098: 'send_packet': 'void' function returning a value
+C:\UDP_Server\UDP_Client\client.c(100,34): warning C4244: 'function': conversion from 'SOCKET' to 'int', possible loss of data
+C:\UDP_Server\UDP_Client\client.c(213,46): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\UDP_Server\UDP_Client\client.c(235,18): warning C4018: '<': signed/unsigned mismatch
+C:\UDP_Server\UDP_Client\client.c(194,15): warning C4101: 'wptr': unreferenced local variable
+  crc64.c
+  Generating Code...
+  UDP_Client.vcxproj -> C:\UDP_Server\x64\Debug\UDP_Client.exe

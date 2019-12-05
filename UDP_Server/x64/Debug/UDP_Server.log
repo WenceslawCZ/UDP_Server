@@ -1,0 +1,13 @@
+﻿  crc64.c
+  server.c
+C:\UDP_Server\UDP_Server\server.c(47,51): warning C4244: '=': conversion from 'double' to 'unsigned int', possible loss of data
+C:\UDP_Server\UDP_Server\server.c(68,1): warning C4133: 'initializing': incompatible types - from 'uint64_t *' to 'U_CHAR *'
+C:\UDP_Server\UDP_Server\server.c(195,38): warning C4244: 'function': conversion from 'SOCKET' to 'int', possible loss of data
+C:\UDP_Server\UDP_Server\server.c(222,89): warning C4047: '=': 'U_CHAR' differs in levels of indirection from 'void *'
+C:\UDP_Server\UDP_Server\server.c(226,51): warning C4022: 'SHA512_Update': pointer mismatch for actual parameter 2
+C:\UDP_Server\UDP_Server\server.c(234,39): warning C4022: 'fwrite': pointer mismatch for actual parameter 1
+C:\UDP_Server\UDP_Server\server.c(235,37): warning C4022: 'free': pointer mismatch for actual parameter 1
+C:\UDP_Server\UDP_Server\server.c(182,14): warning C4101: 'num_rec_Packets': unreferenced local variable
+C:\UDP_Server\UDP_Server\server.c(188,6): warning C4101: 'i': unreferenced local variable
+  Generating Code...
+  UDP_Server.vcxproj -> C:\UDP_Server\x64\Debug\UDP_Server.exe

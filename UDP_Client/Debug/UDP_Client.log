@@ -1,0 +1,11 @@
+﻿  client.c
+C:\KDS\UDP_Client\client.c(93,1): warning C4133: inicializování: nekompatibilní typy – z: uint64_t * na: U_CHAR *
+C:\KDS\UDP_Client\client.c(118,15): warning C4098: send_packet: Funkce void vrací hodnotu.
+  crc64.c
+  Generování kódu...
+C:\KDS\UDP_Client\client.c(218,15): warning C4101: wptr: neodkazovaná lokální proměnná
+client.obj : error LNK2019: Nerozpoznaný externí symbol _SHA512_Init odkazovaný ve funkci _main
+client.obj : error LNK2019: Nerozpoznaný externí symbol _SHA512_Update odkazovaný ve funkci _main
+client.obj : error LNK2019: Nerozpoznaný externí symbol _SHA512_Final odkazovaný ve funkci _main
+C:\KDS\KDS\LIB_files\libcrypto64MD.lib : warning LNK4272: Typ počítače knihovny x64 koliduje s typem cílového počítače x86.
+C:\KDS\Debug\UDP_Client.exe : fatal error LNK1120: Počet nerozpoznaných externích typů: 3
