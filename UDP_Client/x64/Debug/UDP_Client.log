@@ -1,10 +1,14 @@
 ﻿  client.c
-C:\UDP_Server\UDP_Client\client.c(50,1): warning C4133: 'initializing': incompatible types - from 'uint64_t *' to 'U_CHAR *'
-C:\UDP_Server\UDP_Client\client.c(86,15): warning C4098: 'send_packet': 'void' function returning a value
-C:\UDP_Server\UDP_Client\client.c(100,34): warning C4244: 'function': conversion from 'SOCKET' to 'int', possible loss of data
-C:\UDP_Server\UDP_Client\client.c(213,46): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\UDP_Server\UDP_Client\client.c(235,18): warning C4018: '<': signed/unsigned mismatch
-C:\UDP_Server\UDP_Client\client.c(194,15): warning C4101: 'wptr': unreferenced local variable
+C:\UDP_Server\UDP_Client\client.c(30,20): warning C4018: '<': signed/unsigned mismatch
+C:\UDP_Server\UDP_Client\client.c(51,1): warning C4133: 'initializing': incompatible types - from 'uint64_t *' to 'U_CHAR *'
+C:\UDP_Server\UDP_Client\client.c(87,15): warning C4098: 'send_packet': 'void' function returning a value
+C:\UDP_Server\UDP_Client\client.c(101,34): warning C4244: 'function': conversion from 'SOCKET' to 'int', possible loss of data
+C:\UDP_Server\UDP_Client\client.c(180,53): warning C4133: 'function': incompatible types - from 'SOCKADDR_IN *' to 'const sockaddr *'
+C:\UDP_Server\UDP_Client\client.c(181,51): warning C4133: 'function': incompatible types - from 'SOCKADDR_IN *' to 'const sockaddr *'
+C:\UDP_Server\UDP_Client\client.c(225,46): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\UDP_Server\UDP_Client\client.c(233,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\UDP_Server\UDP_Client\client.c(251,18): warning C4018: '<': signed/unsigned mismatch
+C:\UDP_Server\UDP_Client\client.c(206,15): warning C4101: 'wptr': unreferenced local variable
   crc64.c
   Generating Code...
   UDP_Client.vcxproj -> C:\UDP_Server\x64\Debug\UDP_Client.exe

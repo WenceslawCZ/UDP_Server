@@ -205,6 +205,7 @@ int main() {
 		if (FD_ISSET(server_sock.data, &rset)) {		// if UDP packet was received
 			// receive packet with the name
 			nBytesRecv = recvfrom(server_sock.data, Buffer_Rec, sizeof(Buffer_Rec), 0, (SOCKADDR*)&server_info.data, &nServer_data);
+			printf("%d", nBytesRecv);
 			crc_check = check_CRC(Buffer_Rec, nBytesRecv);
 			if (!crc_check) {	//packet corrupted
 				memcpy(Buffer_Send, buf_NOK, PACK_CORR_LEN);
